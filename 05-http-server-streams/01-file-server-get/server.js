@@ -14,9 +14,11 @@ server.on('request', async (req, res) => {
   switch (req.method) {
     case 'GET':
 
-      readStream.on('close', () => {
-        res.statusCode = 201;
-        res.end('Successfully done');
+      readStream.on('data', (data) => {
+        if (!data) {
+          res.statusCode = 201;
+          res.end('Successfully done');
+        }
       });
 
       readStream.on('error', (error) => {
