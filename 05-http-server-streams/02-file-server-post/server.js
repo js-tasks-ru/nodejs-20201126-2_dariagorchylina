@@ -27,7 +27,7 @@ server.on('request', (req, res) => {
         removeFile();
       });
 
-      writeStream.on('finish', () => {
+      res.on('finish', () => {
         res.statusCode = 201;
         res.end('Successfully done');
       });

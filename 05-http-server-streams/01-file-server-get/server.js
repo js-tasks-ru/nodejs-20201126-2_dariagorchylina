@@ -1,35 +1,38 @@
 const url = require('url');
-const {readFile} = require('fs');
+const {createReadStream} = require('fs');
 const http = require('http');
 const path = require('path');
 
 const server = new http.Server();
 
 server.on('request', async (req, res) => {
-  const pathNames = url.parse(req.url).pathname;
-  const pathname = pathNames.slice(1);
-  const hasNestedFiles = pathNames.split('/').filter((i) => i.length).length > 1;
+  const pathname = url.parse(req.url).pathname.slice(1);
+  const hasNestedFiles = pathname.split('/').filter((i) => i.length).length > 1;
   const filepath = path.join(__dirname, 'files', pathname);
+  const readStream = createReadStream(filepath);
 
   switch (req.method) {
     case 'GET':
 
-      if (hasNestedFiles) {
-        res.statusCode = 400;
-        res.end('Bad request');
-        return;
-      }
+      readStream.on('close', () => {
+        res.statusCode = 201;
+        res.end('Successfully done');
+      });
 
-      readFile(filepath, function(error, contents) {
-        if (error && error.code === 'ENOENT') {
-          res.statusCode = 404;
-          res.end('Not found');
+      readStream.on('error', (error) => {
+        if (hasNestedFiles) {
+          res.statusCode = 400;
+          res.end('Bad request');
           return;
         }
 
-        res.statusCode = 200;
-        res.end(contents);
+        if (error.code === 'ENOENT') {
+          res.statusCode = 404;
+          res.end('Not found');
+        }
       });
+
+      readStream.pipe(res);
 
       break;
 
