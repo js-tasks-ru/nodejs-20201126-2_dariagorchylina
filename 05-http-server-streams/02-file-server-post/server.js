@@ -14,7 +14,6 @@ server.on('request', (req, res) => {
   const limitedStream = new LimitSizeStream({limit: 10240});
   const removeFile = () => unlink(filepath, (err) => {
     if (err) throw err;
-    console.log('path/file.txt was deleted');
   });
 
   switch (req.method) {
