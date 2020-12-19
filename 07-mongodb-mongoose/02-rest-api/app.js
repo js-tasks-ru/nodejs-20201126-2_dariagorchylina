@@ -1,7 +1,15 @@
 const Koa = require('koa');
 const Router = require('koa-router');
+const mongoose = require('mongoose');
 const {productsBySubcategory, productList, productById} = require('./controllers/products');
 const {categoryList} = require('./controllers/categories');
+
+
+const dbName = 'node-mongo';
+
+const url = `mongodb://localhost:27017/${dbName}`;
+mongoose.connect(url, {useNewUrlParser: true, useCreateIndex: true});
+mongoose.set('debug', true);
 
 const app = new Koa();
 
