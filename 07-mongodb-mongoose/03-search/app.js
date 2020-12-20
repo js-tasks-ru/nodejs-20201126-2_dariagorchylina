@@ -7,8 +7,6 @@ const dbName = 'node-mongo';
 
 const url = `mongodb://localhost:27017/${dbName}`;
 mongoose.connect(url, {useNewUrlParser: true, useCreateIndex: true});
-mongoose.set('debug', true);
-
 
 const app = new Koa();
 
