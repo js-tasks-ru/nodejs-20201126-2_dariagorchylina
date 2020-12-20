@@ -1,12 +1,13 @@
 const Koa = require('koa');
 const Router = require('koa-router');
-const mongoose = require('mongoose');
 const {productsByQuery} = require('./controllers/products');
 
-const dbName = 'node-mongo';
-
-const url = `mongodb://localhost:27017/${dbName}`;
-mongoose.connect(url, {useNewUrlParser: true, useCreateIndex: true});
+// need to run app, or include connection.js into app.
+// Not sure that I can change app.js
+// const mongoose = require('mongoose');
+// const dbName = 'node-mongo';
+// const url = `mongodb://localhost:27017/${dbName}`;
+// mongoose.connect(url, {useNewUrlParser: true, useCreateIndex: true});
 
 const app = new Koa();
 
